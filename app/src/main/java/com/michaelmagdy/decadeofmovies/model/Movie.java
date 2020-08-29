@@ -1,8 +1,9 @@
 package com.michaelmagdy.decadeofmovies.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Movie implements Comparable<Movie> {
+public class Movie implements Comparable<Movie>, Serializable {
 
     private int rating;
     private List<String> genres;

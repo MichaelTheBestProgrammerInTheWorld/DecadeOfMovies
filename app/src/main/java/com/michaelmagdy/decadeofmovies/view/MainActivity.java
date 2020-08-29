@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -25,6 +27,7 @@ import com.michaelmagdy.decadeofmovies.viewmodel.MainActivityViewModel;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,11 +38,12 @@ import java.util.stream.Collectors;
 public class MainActivity extends AppCompatActivity {
 
     private MainActivityViewModel mainActivityViewModel;
-    //private List<Movie> movieList;
+    private List<Movie> movieList;
     private MoviesListAdapter moviesListAdapter;
     private RecyclerView moviesRecyclerView;
     private InputStream inputStream;
     private FloatingActionButton fabSearch;
+    public static final String INTENT_TAG = "movieTag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         mainActivityViewModel.getMoviesLiveData(inputStream).observe(this, new Observer<List<Movie>>() {
             @Override
             public void onChanged(List<Movie> movies) {
+                movieList = movies;
                 initListAdapter(movies);
             }
         });
@@ -76,6 +81,15 @@ public class MainActivity extends AppCompatActivity {
 
         moviesListAdapter = new MoviesListAdapter(mList);
         moviesRecyclerView.setAdapter(moviesListAdapter);
+
+        moviesListAdapter.setOnItemClickListener(new MoviesListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(MainActivity.this, MovieDetailsActivity.class);
+                intent.putExtra(INTENT_TAG, (Serializable) movieList.get(position));
+                startActivity(intent);
+            }
+        });
     }
 
     private void handleClicks(){

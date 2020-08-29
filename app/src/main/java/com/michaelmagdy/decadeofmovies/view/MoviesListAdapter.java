@@ -17,6 +17,7 @@ import java.util.List;
 public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.MoviesListViewHolder> {
 
     private List<Movie> movieList;
+    private OnItemClickListener mListener;
 
     public MoviesListAdapter(List<Movie> movieList) {
         this.movieList = movieList;
@@ -43,6 +44,14 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
         return movieList.size();
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mListener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
     class MoviesListViewHolder extends RecyclerView.ViewHolder {
 
         TextView titleTxt, yearTxt;
@@ -55,6 +64,18 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
             yearTxt = itemView.findViewById(R.id.li_year);
             ratingBar = itemView.findViewById(R.id.li_ratingBar);
             ratingBar.setEnabled(false);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mListener != null){
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION){
+                            mListener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }
