@@ -124,7 +124,12 @@ public class Repository {
             }
         }
         if (filteredList != null) {
-            moviesLiveData.postValue(filteredList);
+            Collections.sort(filteredList);
+            List<Movie> top5List = new ArrayList<>();
+            for (int i=0; i<5; i++){
+                top5List.add(filteredList.get(i));
+            }
+            moviesLiveData.postValue(top5List);
         }
 
         return moviesLiveData;

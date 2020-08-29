@@ -2,7 +2,7 @@ package com.michaelmagdy.decadeofmovies.model;
 
 import java.util.List;
 
-public class Movie {
+public class Movie implements Comparable<Movie> {
 
     private int rating;
     private List<String> genres;
@@ -56,5 +56,10 @@ public class Movie {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public int compareTo(Movie o) {
+        return o.rating - this.rating;
     }
 }
