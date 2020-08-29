@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">DecadeOfMovies</string>
+
+    <string name="filter">Filter Results</string>
+    <string name="filter_msg">Filter by year of production, this will show
+    top 5 movies in the selected year\n</string>
+    <string name="searh">Search</string>
+
 </resources>

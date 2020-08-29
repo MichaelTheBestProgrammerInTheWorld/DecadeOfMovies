@@ -7,12 +7,15 @@ import com.michaelmagdy.decadeofmovies.model.Movie;
 import com.michaelmagdy.decadeofmovies.model.Repository;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class MainActivityViewModel extends ViewModel {
 
     private MutableLiveData<List<Movie>> moviesLiveData = new MutableLiveData<>();
     private Repository repository;
+    List<Integer> yearsList;
 
     public MainActivityViewModel() {
 
@@ -23,5 +26,10 @@ public class MainActivityViewModel extends ViewModel {
         repository.setInputStream(inputStream);
         moviesLiveData = repository.getMoviesLiveData();
         return moviesLiveData;
+    }
+
+    public List<Integer> getYearsList() {
+        yearsList = repository.getYearsList();
+        return yearsList;
     }
 }

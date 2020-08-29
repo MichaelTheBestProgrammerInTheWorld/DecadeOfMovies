@@ -10,17 +10,27 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Repository {
 
     private MutableLiveData<List<Movie>> moviesLiveData = new MutableLiveData<>();
     private List<Movie> movieList = new ArrayList<>();
     private InputStream inputStream;
+    private Set<Integer> setYears = new HashSet<Integer>();
 
     public void setInputStream(InputStream inputStream) {
         this.inputStream = inputStream;
         showAllMovies();
+    }
+
+    public List<Integer> getYearsList() {
+        List<Integer> yearsList = new ArrayList<Integer>(setYears) ;
+        Collections.sort(yearsList);
+        return yearsList;
     }
 
     public MutableLiveData<List<Movie>> getMoviesLiveData() {
@@ -40,6 +50,7 @@ public class Repository {
                 int rating = jsonObjectMovies.getInt("rating");
                 JSONArray cast = jsonObjectMovies.getJSONArray("cast");
                 JSONArray genre = jsonObjectMovies.getJSONArray("genres");
+                setYears.add(year);
                 ArrayList<String> castList = new ArrayList<>();
                 ArrayList<String> genreList = new ArrayList<>();
                 for (int j=0;j<cast.length();j++){
