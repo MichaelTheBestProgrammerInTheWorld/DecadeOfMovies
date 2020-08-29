@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +22,10 @@ public class Repository {
     private List<Movie> movieList = new ArrayList<>();
     private InputStream inputStream;
     private Set<Integer> setYears = new HashSet<Integer>();
+    //search variables
+    private int startingYear;
+    private HashMap<Integer, Integer> yearsIndexHash = new HashMap<>();
+    private List<Movie> filteredList = new ArrayList<>();
 
     public void setInputStream(InputStream inputStream) {
         this.inputStream = inputStream;
@@ -64,6 +69,14 @@ public class Repository {
                 if (movieList != null) {
                     moviesLiveData.postValue(movieList);
                 }
+                //saving indicies for search
+                if (i == 0){
+                    startingYear = year;
+                    yearsIndexHash.put(startingYear, i);
+                } else if (year == startingYear+1){
+                    startingYear = year;
+                    yearsIndexHash.put(startingYear, i);
+                }
             }
 
 
@@ -86,6 +99,35 @@ public class Repository {
             return null;
         }
         return json;
+    }
+
+
+    public MutableLiveData<List<Movie>> filterMoviesByYear(int selectedYear){
+
+        filteredList.clear();
+        int startIndex = yearsIndexHash.get(selectedYear);
+        int endIndex = 0;
+        if (yearsIndexHash.containsValue(selectedYear+1)){
+            endIndex = yearsIndexHash.get(selectedYear+1);
+        }
+        if (endIndex != 0){
+            for (int i=startIndex; i<endIndex; i++){
+                filteredList.add(movieList.get(i));
+            }
+        } else {
+            for (int i=startIndex; i<movieList.size(); i++){
+                if (movieList.get(i).getYear() == selectedYear){
+                    filteredList.add(movieList.get(i));
+                } else {
+                    break;
+                }
+            }
+        }
+        if (filteredList != null) {
+            moviesLiveData.postValue(filteredList);
+        }
+
+        return moviesLiveData;
     }
 
 }

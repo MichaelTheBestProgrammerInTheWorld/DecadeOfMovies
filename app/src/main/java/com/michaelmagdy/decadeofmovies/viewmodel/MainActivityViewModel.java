@@ -32,4 +32,9 @@ public class MainActivityViewModel extends ViewModel {
         yearsList = repository.getYearsList();
         return yearsList;
     }
+
+    public MutableLiveData<List<Movie>> getFilteredMoviesLiveData(int selectedYear) {
+        moviesLiveData = repository.filterMoviesByYear(selectedYear);
+        return moviesLiveData;
+    }
 }

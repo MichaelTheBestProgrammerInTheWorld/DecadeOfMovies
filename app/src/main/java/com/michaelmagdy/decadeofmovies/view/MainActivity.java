@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createSearchUI() {
-        
+
         List<Integer> yearsList = mainActivityViewModel.getYearsList();
         List<String> newList = yearsList.stream()
                 .map(s -> String.valueOf(s))
@@ -109,7 +109,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String selectedYearStr = spYears.getSelectedItem().toString();
-                Toast.makeText(MainActivity.this, selectedYearStr, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, selectedYearStr, Toast.LENGTH_SHORT).show();
+                mainActivityViewModel.getFilteredMoviesLiveData(Integer.parseInt(selectedYearStr));
             }
         });
         builder.setView(spYears);
