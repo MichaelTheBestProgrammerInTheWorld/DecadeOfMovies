@@ -38,6 +38,16 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:layout_marginBottom="4dp"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/md_no_photos"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:text="No Images to Display"
+        android:gravity="center_horizontal"
+        android:layout_marginVertical="8dp"
+        android:visibility="gone"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/md_pics_list"
         android:layout_width="match_parent"

@@ -1,7 +1,10 @@
 package com.michaelmagdy.decadeofmovies.model;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import com.michaelmagdy.decadeofmovies.model.webservice.ApiClient;
+import com.michaelmagdy.decadeofmovies.model.webservice.ApiResponse;
+import com.michaelmagdy.decadeofmovies.model.webservice.Photo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +19,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class Repository {
 
     private MutableLiveData<List<Movie>> moviesLiveData = new MutableLiveData<>();
@@ -26,6 +33,8 @@ public class Repository {
     private int startingYear;
     private HashMap<Integer, Integer> yearsIndexHash = new HashMap<>();
     private List<Movie> filteredList = new ArrayList<>();
+    //pics
+    private MutableLiveData<List<Photo>> photoLiveData = new MutableLiveData<>();
 
     public void setInputStream(InputStream inputStream) {
         this.inputStream = inputStream;
@@ -133,6 +142,32 @@ public class Repository {
         }
 
         return moviesLiveData;
+    }
+
+
+    //load movie pictures
+    public MutableLiveData<List<Photo>> loadPics(String query){
+
+        ApiClient.getApiClient().getApiInterface().getMoviePics(query)
+                .enqueue(new Callback<ApiResponse>() {
+                    @Override
+                    public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                        ApiResponse apiResponse = response.body();
+                        if (apiResponse != null && apiResponse.getStat().equals("ok")){
+                            List<Photo> photo = apiResponse.getPhotos().getPhoto();
+                            if (photo != null){
+                                photoLiveData.postValue(photo);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ApiResponse> call, Throwable t) {
+
+
+                    }
+                });
+        return photoLiveData;
     }
 
 }

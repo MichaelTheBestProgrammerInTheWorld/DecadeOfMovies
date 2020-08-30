@@ -7,9 +7,7 @@ import com.michaelmagdy.decadeofmovies.model.Movie;
 import com.michaelmagdy.decadeofmovies.model.Repository;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class MainActivityViewModel extends ViewModel {
 
